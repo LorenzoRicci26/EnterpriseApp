@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/students")
@@ -25,13 +26,13 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping("/add")
-    @CacheEvict(value = "students", key = "'all-students'")
+    //@CacheEvict(value = "students", key = "'all-students'")
     public ResponseEntity<StudentDTO> addStudent(@RequestBody StudentDTO studentDto){
         return new ResponseEntity<StudentDTO>(studentService.addStudent(studentDto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    @Cacheable(value = "students", key = "'all-students'")
+    //@Cacheable(value = "students", key = "'all-students'")
     public List<StudentDTO> getAllStudents(){
         log.info("Fetching from database...");
         return studentService.getAllStudents();
@@ -49,7 +50,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    @CacheEvict(value = "students", key = "'all-students'")
+    //@CacheEvict(value = "students", key = "'all-students'")
     public void deleteStudents(@PathVariable String id){
         studentService.deleteStudent(id);
     }

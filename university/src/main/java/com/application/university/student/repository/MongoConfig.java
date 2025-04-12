@@ -13,7 +13,7 @@ import java.util.List;
 public class MongoConfig extends AbstractMongoClientConfiguration {
     @Override
     protected String getDatabaseName() {
-        return "university"; // Replace with your database name
+        return "university";
     }
 
     @Override

@@ -231,10 +231,9 @@ class StudentServiceImplTest {
     // Tests for getAllStudents()
     @Test
     void canGetAllStudents() {
+        // Given
         List<Grade> grades = new ArrayList<>();
-        grades.add(new Grade("Science",
-                25,
-                LocalDate.now()));
+        grades.add(new Grade("Science", 25, LocalDate.now()));
 
         Student student1 = new Student(
                 "Mario",
@@ -242,7 +241,7 @@ class StudentServiceImplTest {
                 Gender.MALE,
                 21,
                 "mario.rossi@gmail.com",
-                LocalDate.of(1999,12,25),
+                LocalDate.of(1999, 12, 25),
                 "ING",
                 2021,
                 true,
@@ -255,7 +254,7 @@ class StudentServiceImplTest {
                 Gender.FEMALE,
                 24,
                 "lucia.bianchi@gmail.com",
-                LocalDate.of(2000,11,20),
+                LocalDate.of(2000, 11, 20),
                 "ING",
                 2022,
                 true,
@@ -263,13 +262,18 @@ class StudentServiceImplTest {
         );
 
         List<Student> students = Arrays.asList(student1, student2);
-        // when
+
+        // When
         when(studentRepository.findAll()).thenReturn(students);
 
-        assertThat(studentServiceUnderTest.getAllStudents()).isEqualTo(students);
-        // then
-        verify(studentRepository).findAll(); // here I check if the student repository invoke the findAll() method
+        // Then
+        assertThat(studentServiceUnderTest.getAllStudents()).isEqualTo(
+                students.stream().map(studentMapper::toStudentDto).toList()
+        );
+
+        verify(studentRepository).findAll();
     }
+
 
     @Test
     void willThrowWhenNoContent() {

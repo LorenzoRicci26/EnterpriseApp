@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: university-be
+spec:
+  type: ClusterIP
+  selector:
+    app: university-be
+  ports:
+    - port: 80
+      targetPort: 8080
