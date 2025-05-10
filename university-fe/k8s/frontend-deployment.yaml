@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: university-fe
+  labels:
+    app: university-fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: university-fe
+  template:
+    metadata:
+      name: university-fe
+      labels:
+        app: university-fe
+    spec:
+      containers:
+        - name: university-fe
+          image: university-fe:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+              protocol: TCP
+      restartPolicy: Always

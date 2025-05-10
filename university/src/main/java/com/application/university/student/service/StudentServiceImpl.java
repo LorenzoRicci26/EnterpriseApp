@@ -4,6 +4,7 @@ import com.application.university.student.event.producer.MessageProducer;
 import com.application.university.student.entity.Grade;
 import com.application.university.student.entity.Student;
 import com.application.university.student.mapper.StudentMapper;
+import com.application.university.student.model.StudentCreateDTO;
 import com.application.university.student.model.StudentDTO;
 import com.application.university.student.model.TopStudentDTO;
 import com.application.university.student.repository.StudentRepository;
@@ -31,12 +32,15 @@ public class StudentServiceImpl implements StudentService {
     private final MessageProducer messageProducer;
 
     @Override
-    public StudentDTO addStudent(StudentDTO studentDto) {
-        if(studentDto == null){
+    public StudentDTO addStudent(StudentCreateDTO studentCreateDTO) {
+        System.out.println("Student arrived: " + studentCreateDTO);
+        if(studentCreateDTO == null){
             log.error("student is null");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "studente non valido, riprovare!");
         }
-        Student student = studentMapper.toStudent(studentDto);
+        System.out.println("No vabbè follia...");
+        Student student = studentMapper.toStudent(studentCreateDTO);
+        System.out.println("Student to save mapped: " + student);
         boolean existsEmail = studentRepository
                 .findByEmail(student.getEmail()) != null;
         if(existsEmail){
@@ -45,13 +49,14 @@ public class StudentServiceImpl implements StudentService {
             );
         }
         Student studentSaved = studentRepository.save(student);
-        try {
-            String studentJson = objectMapper.writeValueAsString(studentSaved);
-            messageProducer.sendMessage("student1", studentJson);
-        } catch (JsonProcessingException e) {
-            log.error("Error while converting student to json: {}", e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while converting student to json");
-        }
+        System.out.println("Student saved: " + studentSaved);
+//        try {
+//            String studentJson = objectMapper.writeValueAsString(studentSaved);
+//            messageProducer.sendMessage("student1", studentJson);
+//        } catch (JsonProcessingException e) {
+//            log.error("Error while converting student to json: {}", e.getMessage());
+//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while converting student to json");
+//        }
         return studentMapper.toStudentDto(studentSaved);
     }
 

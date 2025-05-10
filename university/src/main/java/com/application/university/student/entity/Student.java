@@ -4,7 +4,6 @@ import com.application.university.student.utils.Gender;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,11 +12,10 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Document(collection = "students")
 public class Student implements Serializable {
     @Id
-    private UUID id = UUID.randomUUID();
+    private String id;
     private String name;
     private String surname;
     private Gender gender;
@@ -30,6 +28,10 @@ public class Student implements Serializable {
     //List of grades
     private List<Grade> grades;
 
+    public Student() {
+        this.id = UUID.randomUUID().toString();
+    }
+
     public Student(String name,
                    String surname,
                    Gender gender,
@@ -41,6 +43,7 @@ public class Student implements Serializable {
                    Boolean active,
                    List<Grade> grades
     ) {
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.surname = surname;
         this.gender = gender;

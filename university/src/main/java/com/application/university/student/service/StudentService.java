@@ -2,6 +2,7 @@ package com.application.university.student.service;
 
 import com.application.university.student.entity.Grade;
 import com.application.university.student.entity.Student;
+import com.application.university.student.model.StudentCreateDTO;
 import com.application.university.student.model.StudentDTO;
 import com.application.university.student.model.TopStudentDTO;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public interface StudentService {
 
     // Service to add a student
-    StudentDTO addStudent(StudentDTO studentDto);
+    StudentDTO addStudent(StudentCreateDTO studentCreateDTO);
 
     // Service to get all the students
     List<StudentDTO> getAllStudents();

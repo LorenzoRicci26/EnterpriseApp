@@ -1,0 +1,29 @@
+<app-navbar></app-navbar>
+<div class="students-container">
+  <h2>Lista Studenti</h2>
+  <div class="card-grid">
+    <div class="student-card" *ngFor="let student of students">
+      <h3>{{ student.name }} {{ student.surname }}</h3>
+      <p><strong>Email:</strong> {{ student.email }}</p>
+      <p><strong>Età:</strong> {{ student.age }}</p>
+      <p><strong>Data di nascita:</strong> {{ student.dob }}</p>
+      <p><strong>Genere:</strong> {{ student.gender }}</p>
+      <p><strong>Facoltà:</strong> {{ student.faculty }}</p>
+      <p><strong>Anno di iscrizione:</strong> {{ student.enrollmentYear }}</p>
+      <p><strong>Stato:</strong>
+        <span [class.active]="student.active" [class.inactive]="!student.active">
+          {{ student.active ? 'Attivo' : 'Non attivo' }}
+        </span>
+      </p>
+      <div class="grades-section">
+        <h4>Esami</h4>
+        <ul *ngIf="student.grades.length > 0; else noGrades">
+          <li *ngFor="let grade of student.grades">
+            {{ grade.subject }} - <strong>{{ grade.value }}</strong> ({{ grade.examDate }})
+          </li>
+        </ul>
+        <ng-template #noGrades><em>Nessun esame registrato</em></ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: university-be
+  labels:
+    app: university-be
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: university-be
+  template:
+    metadata:
+      name: university-be
+      labels:
+        app: university-be
+    spec:
+      containers:
+        - name: university-be
+          image: university-be:0-0-2
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: SPRING_REDIS_HOST
+              value: "host.minikube.internal"
+            - name: SPRING_REDIS_PORT
+              value: "6379"
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: "host.minikube.internal:9092"
+            - name: SPRING_DATA_MONGODB_URI
+              value: "mongodb://host.minikube.internal:27017/university"
+      restartPolicy: Always

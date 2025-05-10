@@ -2,6 +2,7 @@ package com.application.university.student.controller;
 
 import com.application.university.student.entity.Grade;
 import com.application.university.student.entity.Student;
+import com.application.university.student.model.StudentCreateDTO;
 import com.application.university.student.model.StudentDTO;
 import com.application.university.student.model.TopStudentDTO;
 import com.application.university.student.service.StudentService;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/students")
@@ -26,13 +27,13 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping("/add")
-    //@CacheEvict(value = "students", key = "'all-students'")
-    public ResponseEntity<StudentDTO> addStudent(@RequestBody StudentDTO studentDto){
-        return new ResponseEntity<StudentDTO>(studentService.addStudent(studentDto), HttpStatus.CREATED);
+    @CacheEvict(value = "students", key = "'all-students'")
+    public ResponseEntity<StudentDTO> addStudent(@RequestBody StudentCreateDTO studentCreateDTO){
+        return new ResponseEntity<StudentDTO>(studentService.addStudent(studentCreateDTO), HttpStatus.CREATED);
     }
 
     @GetMapping
-    //@Cacheable(value = "students", key = "'all-students'")
+    @Cacheable(value = "students", key = "'all-students'")
     public List<StudentDTO> getAllStudents(){
         log.info("Fetching from database...");
         return studentService.getAllStudents();
@@ -50,7 +51,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    //@CacheEvict(value = "students", key = "'all-students'")
+    @CacheEvict(value = "students", key = "'all-students'")
     public void deleteStudents(@PathVariable String id){
         studentService.deleteStudent(id);
     }

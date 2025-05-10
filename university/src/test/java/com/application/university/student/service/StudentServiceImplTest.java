@@ -4,6 +4,7 @@ import com.application.university.student.event.producer.MessageProducer;
 import com.application.university.student.entity.Grade;
 import com.application.university.student.entity.Student;
 import com.application.university.student.mapper.StudentMapper;
+import com.application.university.student.model.StudentCreateDTO;
 import com.application.university.student.model.StudentDTO;
 import com.application.university.student.model.TopStudentDTO;
 import com.application.university.student.repository.StudentRepository;
@@ -50,8 +51,7 @@ class StudentServiceImplTest {
     @Test
     void canAddStudent() throws JsonProcessingException {
         // given
-        StudentDTO inputDto = new StudentDTO(
-                null,
+        StudentCreateDTO inputDto = new StudentCreateDTO(
                 "John",
                 "Doe",
                 Gender.MALE,
@@ -77,7 +77,7 @@ class StudentServiceImplTest {
         mappedStudent.setGrades(Collections.emptyList());
 
         Student savedStudent = new Student();
-        savedStudent.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")); // ID generato dal database
+        savedStudent.setId("550e8400-e29b-41d4-a716-446655440000"); // ID generato dal database
         savedStudent.setName("John");
         savedStudent.setSurname("Doe");
         savedStudent.setGender(Gender.MALE);
@@ -117,7 +117,7 @@ class StudentServiceImplTest {
         verify(studentMapper).toStudent(inputDto);
         verify(studentRepository).findByEmail(mappedStudent.getEmail());
         verify(studentRepository).save(mappedStudent);
-        verify(objectMapper).writeValueAsString(savedStudent);
+        //verify(objectMapper).writeValueAsString(savedStudent);
         verify(studentMapper).toStudentDto(savedStudent);
     }
 
@@ -131,8 +131,7 @@ class StudentServiceImplTest {
     @Test
     void willThrowWhenEmailIsTaken() {
         // given
-        StudentDTO inputDto = new StudentDTO(
-                null,
+        StudentCreateDTO studentCreateDTO = new StudentCreateDTO(
                 "John",
                 "Doe",
                 Gender.MALE,
@@ -158,22 +157,21 @@ class StudentServiceImplTest {
         mappedStudent.setGrades(Collections.emptyList());
 
         // when
-        when(studentMapper.toStudent(inputDto)).thenReturn(mappedStudent);
+        when(studentMapper.toStudent(studentCreateDTO)).thenReturn(mappedStudent);
         when(studentRepository.findByEmail(mappedStudent.getEmail())).thenReturn(mappedStudent);
 
         // then
-        assertThatThrownBy(() -> studentServiceUnderTest.addStudent(inputDto))
+        assertThatThrownBy(() -> studentServiceUnderTest.addStudent(studentCreateDTO))
                         .isInstanceOf(ResponseStatusException.class)
                         .hasMessageContaining("Email " + mappedStudent.getEmail() + " taken");
-        verify(studentMapper).toStudent(inputDto);
+        verify(studentMapper).toStudent(studentCreateDTO);
         verify(studentRepository).findByEmail(mappedStudent.getEmail());
     }
 
     @Test
     void willThrowWhenJsonProcessFailed() throws JsonProcessingException {
         // given
-        StudentDTO inputDto = new StudentDTO(
-                null,
+        StudentCreateDTO inputDto = new StudentCreateDTO(
                 "John",
                 "Doe",
                 Gender.MALE,
@@ -199,7 +197,7 @@ class StudentServiceImplTest {
         mappedStudent.setGrades(Collections.emptyList());
 
         Student savedStudent = new Student();
-        savedStudent.setId(UUID.fromString("550e8400-e29b-41d4-a716-446655440000")); // ID generato dal database
+        savedStudent.setId("550e8400-e29b-41d4-a716-446655440000"); // ID generato dal database
         savedStudent.setName("John");
         savedStudent.setSurname("Doe");
         savedStudent.setGender(Gender.MALE);
@@ -308,7 +306,7 @@ class StudentServiceImplTest {
                 true,
                 grades
         );
-        UUID id = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
+        String id = "550e8400-e29b-41d4-a716-446655440000";
         student.setId(id);
         Grade newGrade = new Grade("Math", 29, LocalDate.now());
 
@@ -346,7 +344,7 @@ class StudentServiceImplTest {
                 true,
                 grades
         );
-        UUID id = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
+        String id = "550e8400-e29b-41d4-a716-446655440000";
         student.setId(id);
         // when
         when(studentRepository.findById(String.valueOf(id))).thenReturn(Optional.of(student));
@@ -392,7 +390,7 @@ class StudentServiceImplTest {
                 true,
                 grades
         );
-        UUID id = UUID.fromString("550e8400-e29b-41d4-a716-446655440000");
+        String id = "550e8400-e29b-41d4-a716-446655440000";
         student.setId(id);
         Grade newGrade = new Grade("Math", 17, LocalDate.now());
 
