@@ -9,24 +9,6 @@ Sistema gestionale universitario full-stack composto da:
 
 ---
 
-## 📂 Struttura del progetto
-
-university-system/
-├── backend/ # Spring Boot + MongoDB
-│ ├── src/
-│ ├── Dockerfile
-│ └── ...
-├── frontend/ # Angular
-│ ├── src/
-│ ├── Dockerfile
-│ └── ...
-├── k8s/
-│ ├── backend-deployment.yaml
-│ ├── frontend-deployment.yaml
-│ └── mongo-deployment.yaml
-└── README.md
----
-
 ## ⚙️ Stack Tecnologico
 
 ### Backend
